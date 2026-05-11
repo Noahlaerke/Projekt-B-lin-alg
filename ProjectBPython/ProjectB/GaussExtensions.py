@@ -54,7 +54,16 @@ def ElementaryRowReplacement(A: Matrix, i: int, m: float, j: int) -> Matrix:
     Returns:
         A modified in-place after row replacement.
     """
-   
+    #Total columns
+    N = A.N_Cols
+
+    #Loops through row we are replacing
+    for k in range(N):
+        #Replaces value
+        A[i, k] = A[i, k] + m * A[j, k]
+
+    return A
+
 
 def ElementaryRowInterchange(A: Matrix, i: int, j : int) -> Matrix:
     """
