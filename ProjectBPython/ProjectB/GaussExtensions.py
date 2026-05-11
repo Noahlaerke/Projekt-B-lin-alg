@@ -84,7 +84,19 @@ def ElementaryRowScaling(A: Matrix, i: int, c: float) -> Matrix:
     Returns:
         A modified in-place after row scaling.
     """
-    raise NotImplementedError()
+    N = A.N_Cols 
+    for j in range(N):
+        A[i, j] = c * A[i, j]
+    return A
+# Vi har en matrix i som vi skal scalerer, det gør vi ved at scalerer matrixen med konstanten c
+# og så returnere den modificerede matrix A.
+
+
+
+    
+   
+    
+
 
 
 def ForwardReduction(A: Matrix) -> Matrix:
