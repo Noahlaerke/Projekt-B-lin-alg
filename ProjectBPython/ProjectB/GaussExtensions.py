@@ -54,8 +54,7 @@ def ElementaryRowReplacement(A: Matrix, i: int, m: float, j: int) -> Matrix:
     Returns:
         A modified in-place after row replacement.
     """
-    raise NotImplementedError()
-
+   
 
 def ElementaryRowInterchange(A: Matrix, i: int, j : int) -> Matrix:
     """
@@ -69,7 +68,12 @@ def ElementaryRowInterchange(A: Matrix, i: int, j : int) -> Matrix:
     Returns:
         A modified in-place after row interchange
     """
-    raise NotImplementedError()
+    M = A.M_Rows
+    N = A.N_Cols
+    #loops through columns
+    for col in range(N):
+       A[i, col], A[j, col] = A[j, col], A[i, col]
+    return A
 
 
 def ElementaryRowScaling(A: Matrix, i: int, c: float) -> Matrix:
