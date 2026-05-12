@@ -106,12 +106,6 @@ def ElementaryRowScaling(A: Matrix, i: int, c: float) -> Matrix:
 
 
 
-    
-   
-    
-
-
-
 def ForwardReduction(A: Matrix) -> Matrix:
     """
     Forward reduction of matrix A.
@@ -126,7 +120,84 @@ def ForwardReduction(A: Matrix) -> Matrix:
         M-by-N matrix which is the row-echelon form of A (performed in-place,
         i.e., A is modified directly).
     """
-    raise NotImplementedError()
+    M = A.M_Rows
+    N = A.N_Cols
+    i = 0
+    j = 0
+
+    # Finds pivot column and element
+    for column in range(N):
+        for row in range(M):
+            if round(A[row, column], 10) != 0:  #Rounding to compensate for very small non-zero values which should be zero
+                (i, j) = (row, column)
+                print(A[i,j])
+                print((i,j))
+                print(A)
+                break
+        else:
+            continue # If inner loop is not broken, continue
+        break
+        
+    # Ensures pivot row is at top 
+    A = ElementaryRowInterchange(A, i, 0)
+
+    # Reduces all elements below our pivot element
+    for row in range(1, M):
+        print(A)
+        frac = A[row, j] / A[0, j]
+        A = ElementaryRowReplacement(A, row, -frac, 0)
+
+    # Gets submatrix without first row
+    B = Matrix(M-1, N)
+    for row in range(M-1):
+        for column in range(N):
+            B[row, column] = A[row + 1, column]
+            print(A)
+            print(B)
+
+    # Check if more rows left
+    if B.Size <= 0:
+        return A
+
+    # Check if remaining submatrix are 0 rows
+    for row in range(M-1):
+        if round(sum(B.Row(row)), 10) != 0: #Rounding to compensate for very small non-zero values which should be zero
+            firstRowArray = [A.asArray()[0]]
+            return Matrix.fromArray(firstRowArray + ForwardReduction(B).asArray())
+    return A
+
+testMatrix = Matrix.fromArray([[-5.25000, -2.12000, -1.61000, 1.39000, 8.95000],
+ [0.00000, -3.30806, -1.70560, -8.00703, -20.32943],
+ [0.00000, -1.11185, 6.07827, -4.97459, -6.02819],
+ [0.00000, -0.50990, -5.56733, -6.76162, 22.92238],
+ [0.00000, -8.25221, 1.92813, -3.10044, 0.21876],
+ [0.00000, -0.51318, 4.24093, -4.35192, 18.79848],
+ [0.00000, -9.85990, -9.84733, 9.09838, 12.57238],
+ [0.00000, -12.91067, -3.07867, 7.38133, 17.31333],
+ [0.00000, 11.10888, 10.57853, 6.56710, -16.84210],
+ [0.00000, 1.18455, -0.60253, -0.73539, 24.85781],
+ [0.00000, 5.49227, 9.70347, -8.61653, 6.66067],
+ [0.00000, 4.54246, 0.13880, -7.58977, -4.07457],
+ [0.00000, 12.17434, 11.73160, -0.33983, -6.34343]])
+resultMatrix = Matrix.fromArray([[-5.25000, -2.12000, -1.61000, 1.39000, 8.95000],
+ [0.00000, -3.30806, -1.70560, -8.00703, -20.32943],
+ [0.00000, 0.00000, 6.65152, -2.28340, 0.80459],
+ [0.00000, 0.00000, 0.00000, -7.34837, 26.69761],
+ [0.00000, 0.00000, 0.00000, 0.00000, 119.20009],
+ [0.00000, 0.00000, 0.00000, 0.00000, -0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, 0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, -0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, 0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, 0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, 0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, 0.00000],
+ [0.00000, 0.00000, 0.00000, 0.00000, 0.00000]])
+print("matrix:")
+print(testMatrix)
+print("Result:")
+print(ForwardReduction(testMatrix))
+print("Expected result:")
+print(resultMatrix)
 
 
 def BackwardReduction(A: Matrix) -> Matrix:
