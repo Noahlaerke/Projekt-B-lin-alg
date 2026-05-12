@@ -213,7 +213,29 @@ def BackwardReduction(A: Matrix) -> Matrix:
         M-by-N matrix which is the reduced form of A (performed in-place,
         i.e., A is modified directly).
     """
-    raise NotImplementedError()
+    M = A.M_Rows
+    N = A.N_Cols
+
+    for i in range(M - 1, -1, -1):
+        # find pivot i rækken
+        pivot = -1
+        for j in range(N):
+            if A[i, j] != 0:
+                pivot = j
+                break
+        # spring nul rækkerne over
+        if pivot == -1:
+            continue
+        # gør pivot = 1
+        ElementaryRowScaling(A, i, 1 / A[i, pivot])
+        # fjerner alt over pivot
+        for k in range(i):
+            ElementaryRowReplacement(A, k, -A[k, pivot], i)
+    return A
+
+        
+
+
 
 
 def GaussElimination(A: Matrix, v: Vector) -> Vector:
