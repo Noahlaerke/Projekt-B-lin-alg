@@ -220,7 +220,7 @@ def BackwardReduction(A: Matrix) -> Matrix:
         # find pivot i rækken
         pivot = -1
         for j in range(N):
-            if A[i, j] != 0:
+            if round(A[i, j], 10) != 0:  # Rounding to compensate for very small non-zero values which should be zero
                 pivot = j
                 break
         # spring nul rækkerne over
@@ -255,4 +255,19 @@ def GaussElimination(A: Matrix, v: Vector) -> Vector:
     Return:
          M-size solution vector of the system.
     """
-    raise NotImplementedError()
+    
+    M = A.M_Rows
+    N = A.N_Cols
+
+    # Laver udvidet matrix
+    A = AugmentRight(A, v)
+
+    # Lav Gauss elimination ved at gøre de tideligere trin
+    A = ForwardReduction(A)
+    A = BackwardReduction(A)
+
+    # Få løsningen ved at udtrække den sidste kolonne
+    x = Vector(N)
+    for i in range(N):
+        x[i] = A[i, N]
+    return x
